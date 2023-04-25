@@ -6,9 +6,11 @@ const App = () => {
   const [clicks, setClicks] = useState(0)
 
   const handelButtonClick = () => {
-    setClicks(clicks +1)
-    console.log("Clicks:", clicks)
+    setClicks(clicks + 1)
   }
+
+  console.log("Rednering...")
+
 
 
   return (
@@ -20,6 +22,9 @@ const App = () => {
       <p>You have clicked the button {clicks} times.</p>
 
       <button onClick={handelButtonClick} className='btn btn-success btn-lg'>click me!</button>
+
+      <button onClick={ () => { setMsg('Hi') } } className='btn btn-warning btn-lg'>Hi!</button>
+
 
     </div >
   )
