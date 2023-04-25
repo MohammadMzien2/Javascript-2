@@ -3,13 +3,11 @@ import './App.css'
 
 const App = () => {
   const [msg, setMsg] = useState("Hi, I'm stateful")
-  console.log("App is being rendered")
+  const [clicks, setClicks] = useState(0)
 
   const handelButtonClick = () => {
-    console.log("You clicked the button, good boi!")
-    console.log("Message is:", msg)
-    setMsg("Bye")
-    console.log("Message after chage is:", msg)
+    setClicks(clicks +1)
+    console.log("Clicks:", clicks)
   }
 
 
@@ -19,7 +17,7 @@ const App = () => {
 
       <h2>{msg}</h2>
 
-      <p>You have clicked the button 0 times.</p>
+      <p>You have clicked the button {clicks} times.</p>
 
       <button onClick={handelButtonClick} className='btn btn-success btn-lg'>click me!</button>
 
