@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import ClickCounter from './components/ClickCounter'
+import Salary from './components/Salary'
 import './App.css'
 
 type Post = {
@@ -8,25 +10,39 @@ type Post = {
 
 const App = () => {
 	const [msg, setMsg] = useState("Hi mom, I'm stateful")
-	const [clicks, setClicks] = useState(0)
 	const [posts, setPosts] = useState<Post[]>([
-		{ title: "React Rocks 🤘🏻!", likes: 1337 },
-		{ title: "JSX Rocks Even Moar 🤘🏻!", likes: 42 },
-		{ title: "Got state?", likes: 3 },
+		{ title: "React Rocks 🤘🏻!", likes: 1337 },  // 0xAF
+		{ title: "JSX Rocks Even Moar 🤘🏻!", likes: 42 },  // 0x1336
+		{ title: "Got state?", likes: 3 },  // 0x420
 	])
-	const [salary, setSalary] = useState(10)
 
-	const handleButtonClick = () => {
-		setClicks(clicks + 1)
-		// console.log("Clicks:", clicks)
+	// input state
+	const [newPostTitle, setNewPostTitle] = useState("")
+
+	const handleAddLike = (post: Post) => {
+		post.likes++
+		setPosts([...posts])
 	}
 
-	const handleChangeSalary = (amount: number) => {
-		if (salary + amount < 5) {
-			return setSalary(5)
-		}
+	const handleDeletePost = (postToDelete: Post) => {
+		setPosts(posts.filter(post => post !== postToDelete))
+		// setPosts([...posts, { title: "I am new post", likes: 0 }])
+		// setPosts(posts.filter(post => post !== postToDelete))
+	}
 
-		setSalary(salary + amount)
+	const handleFormSubmit = (e: React.FormEvent) => {
+		// stop form from submitting
+		e.preventDefault()
+
+		// add a new post to the posts state
+		const newPost: Post = {
+			title: newPostTitle,
+			likes: 0
+		}
+		setPosts([...posts, newPost])
+
+		// clear newPostTitle state
+		setNewPostTitle("")
 	}
 
 	console.log("Rendering...")
@@ -34,60 +50,66 @@ const App = () => {
 	return (
 		<div className="App">
 			<h1>React Basics</h1>
-
 			<h2>{msg}</h2>
-
-			<p>You have clicked the button {clicks} times.</p>
-
-			<button onClick={handleButtonClick} className="btn btn-success btn-lg">👆🏻 me!</button>
 
 			<button onClick={ () => { setMsg('Hi dad!') } } className="btn btn-warning btn-lg">Hi dad!</button>
 
 			<hr />
 
-			<p>Salary per hour: {salary} &euro;</p>
+			<ClickCounter />
 
-			{salary < 10 && (
-				<div className="alert alert-warning">You might want to change job?</div>
-			)}
+			<hr />
 
-			<div className="buttons">
-				<div className="mb-1">
-					<button
-						className="btn btn-primary btn-lg"
-						onClick={() => { handleChangeSalary(1) }}
-					>Raise 1 &euro; 🤑</button>
-					<button
-						className="btn btn-warning btn-lg"
-						onClick={() => { handleChangeSalary(-1) }}
-					>Decrease 1 &euro; 😢</button>
-				</div>
-
-				<div className="mb-1">
-					<button
-						className="btn btn-success btn-lg"
-						onClick={() => { handleChangeSalary(5) }}
-					>Raise 5 &euro; 🤑🤑🤑</button>
-					<button
-						className="btn btn-danger btn-lg"
-						onClick={() => { handleChangeSalary(-5) }}
-					>Decrease 5 &euro; 😢😢😢</button>
-				</div>
-			</div>
+			<Salary />
 
 			<hr />
 
 			<h2>Posts</h2>
 
-			<ul>
-				{
-					posts.map( (post, index) => (
-						<li key={index}>
-							{post.title} ({post.likes} likes)
-						</li>
-					))
-				}
-			</ul>
+			<form onSubmit={handleFormSubmit} className="mb-3">
+				<div className="input-group">
+					<input
+						type="text"
+						className="form-control"
+						placeholder="Post title"
+						onChange={ e => setNewPostTitle(e.target.value) }
+						value={newPostTitle}
+						required
+					/>
+
+					<button
+						type="submit"
+						className="btn btn-primary"
+					>
+						Create
+					</button>
+				</div>
+				{newPostTitle.length > 0 && newPostTitle.length < 5 && (
+					<div className="form-text text-warning">Title has to be at least 5 chars.</div>
+				)}
+			</form>
+
+			{posts.length > 0 && (
+				<ul>
+					{
+						posts.map( (post, index) => (
+							<li key={index}>
+								{post.title} ({post.likes} likes)
+								<button
+									className="btn btn-success btn-sm ms-1"
+									onClick={() => handleAddLike(post)}
+								>❤️</button>
+								<button
+									className="btn btn-danger btn-sm ms-1"
+									onClick={() => handleDeletePost(post)}
+								>🗑️</button>
+							</li>
+						))
+					}
+				</ul>
+			)}
+
+			{posts.length === 0 && (<p>These are not the posts you're looking for</p>)}
 		</div>
 	)
 }
