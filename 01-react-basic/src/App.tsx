@@ -19,7 +19,20 @@ function App() {
   ])
 
   const [salary, setSaraly] = useState(10)
-  const [showSaraly, setShowSalary] = useState(true)
+
+  const [showSaraly, setShowSalary] = useState(false)
+
+  const handleAddLike = (post: Post) => {
+    console.log("Want to add like to post:", post)
+
+    // add likes to post
+    post.likes++
+    console.log("Post like are now:", post.likes)
+
+    setPosts([...posts]) //pickare på genväg 0x39
+    // const newPosts = [...posts]  //pickare på genväg 0x48
+
+  }
 
   const handleButtonClick = () => {
     console.log("Clicks before first change:", clicks)
@@ -48,6 +61,7 @@ function App() {
 
 
 
+
   return (
     <div className="App">
       <h1>React basic</h1>
@@ -58,14 +72,16 @@ function App() {
 
       <button onClick={handleButtonClick} className='btn btn-success btn-lg'>click me</button>
 
-      <button onClick={() => { setMsg("Hi dad!") }} className='btn btn-warning btn-lg'>Hi dad</button>
+      <button onClick={() => { setMsg(msg === "Hi dad!" ? "Hi mom!" : "Hi dad!") }} className='btn btn-warning btn-lg'>Hi dad</button>
 
       <hr />
 
       {/*<button className='btn btn-primary' onClick={() => setShowSalary  (true)}>show Salary</button>
       <button className='btn btn-primary'onClick={() => setShowSalary(false)}>Hide Salary</button>*/}
 
-      <button className='btn btn-primary' onClick={() => setShowSalary(!showSaraly)}>Show/Hide Salary</button>
+      <button className='btn btn-primary' onClick={() => setShowSalary(!showSaraly)}>
+        {showSaraly ? "Hide salary" : "Show salary"}
+      </button>
 
 
       {showSaraly && (
@@ -113,6 +129,7 @@ function App() {
           posts.map((post, index) => (
             <li key={index}>
               {post.title} ({post.likes}likes)
+              <button className='btn btn-success btn-sm ms-2' onClick={() => handleAddLike(post)}>hjärta</button>
             </li>
           ))
         }
