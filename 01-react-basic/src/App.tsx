@@ -18,6 +18,8 @@ function App() {
     { title: "Got state?", likes: 3 },
   ])
 
+  const [salary, setSaraly] = useState(10)
+
   const handleButtonClick = () => {
     setClicks(clicks + 1)
     console.log("clicks", clicks)
@@ -25,6 +27,12 @@ function App() {
   }
 
 
+  const handleChangeSalary = (amount: number) => {
+    if (salary + amount < 5) {
+      return setSaraly(5)
+    }
+    setSaraly(salary + amount)
+  }
 
   console.log("Rendering...")
 
@@ -42,14 +50,44 @@ function App() {
 
       <hr />
 
+      <p>Saraly per hour: {salary} &euro;</p>
+
+      {salary < 10 &&
+        <div className='alert alert-warning'>You might want to change job</div>
+      }
+
+      <div className='buttons'>
+        <div className='mb-1'>
+          <button className='btn btn-primary btn-lg' onClick={() => { handleChangeSalary(1) }}>
+            Raise 1 &euro;</button>
+
+          <button className='btn btn-warning btn-lg' onClick={() => { handleChangeSalary(-1) }}>
+            Decrease 1 &euro;</button>
+        </div>
+
+        <div className='mb-1'>
+          <button className='btn btn-success btn-lg'
+            onClick={() => { handleChangeSalary(5) }}>
+            Raise 5 &euro;
+          </button>
+          <button className='btn btn-danger btn-lg'
+            onClick={() => { handleChangeSalary(-5) }}>
+            Decrease 5 &euro;
+
+          </button>
+
+        </div>
+
+      </div>
+
       <h2>Posts</h2>
 
       <ul>
         {
-          posts.map( (post, index) => (
-             <li key={index}>
+          posts.map((post, index) => (
+            <li key={index}>
               {post.title} ({post.likes}likes)
-              </li>
+            </li>
           ))
         }
       </ul>
