@@ -10,7 +10,6 @@ type Post = {
 
 }
 
-
 const App = () => {
   const [msg, setMsg] = useState("Hi mom, I'm stateful")
   const [posts, setPosts] = useState<Post[]>([
@@ -19,6 +18,8 @@ const App = () => {
     { title: "Got state?", likes: 3 },
   ])
 
+  // Input state
+  const [newPostTitle, setNewPostTitle] = useState("")
 
   const handleAddLike = (post: Post) => {
     console.log("Want to add like to post:", post)
@@ -33,7 +34,21 @@ const App = () => {
     setPosts(posts.filter(post => post !== postToDelete))
     //setPosts([...posts, { title: "I am new post", likes: 0 }]) // [ {}, {}, {} ]
     //setPosts(prevPosts => prevPosts.filter(post => post !== postToDelete))
+  }
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    // Stop form from submitting
+    e.preventDefault()
+
+    // add a new post to the posts state
+    const newPost: Post = {
+      title: newPostTitle,
+      likes: 0
+    }
+    setPosts([...posts, newPost])
+
+    // Clear newPostTitle state
+    setNewPostTitle("")
   }
 
   console.log("Rendering...")
@@ -58,6 +73,22 @@ const App = () => {
       <hr />
 
       <h2>Posts</h2>
+
+      <form onSubmit={handleFormSubmit} className='mb-3'>
+        <div className="input-group mb-3">
+
+          <input type="text" className='form-control' placeholder='Post title' onChange={e => setNewPostTitle(e.target.value)}
+            value={newPostTitle}
+            required
+          />
+
+          <button type='submit' className='btn btn-primary'>Create</button>
+          
+          {newPostTitle.length > 0 && newPostTitle.length < 5 && (
+            <div className='form-text text-warning'>Title has to be at least 5 chars.</div>
+          )}
+        </div>
+      </form>
 
       {posts.length > 0 && (
 
