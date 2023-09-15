@@ -27,10 +27,14 @@ function App() {
 
     // add likes to post
     post.likes++
-    console.log("Post like are now:", post.likes)
-
     setPosts([...posts]) //pickare på genväg 0x39
     // const newPosts = [...posts]  //pickare på genväg 0x48
+  }
+
+  const handleDeletePost = (postToDelete: Post) => {
+		setPosts(posts.filter(post => post !== postToDelete))
+    //setPosts([...posts, { title: "I am new post", likes: 0 }]) // [ {}, {}, {} ]
+    //setPosts(prevPosts => prevPosts.filter(post => post !== postToDelete))
 
   }
 
@@ -124,16 +128,27 @@ function App() {
 
       <h2>Posts</h2>
 
-      <ul>
-        {
-          posts.map((post, index) => (
-            <li key={index}>
-              {post.title} ({post.likes}likes)
-              <button className='btn btn-success btn-sm ms-2' onClick={() => handleAddLike(post)}>hjärta</button>
-            </li>
-          ))
-        }
-      </ul>
+      {posts.length > 0 && (
+
+        <ul>
+          {
+            posts.map((post, index) => (
+              <li key={index}>
+                {post.title} ({post.likes}likes)
+                <button className='btn btn-success btn-sm ms-2' onClick={() => handleAddLike(post)}>hjärta</button>
+
+
+                <button className='btn btn-danger btn-sm ms-2' onClick={() => handleDeletePost(post)}>🗑️</button>
+
+              </li>
+
+            ))
+          }
+        </ul>
+      )}
+
+      {posts.length === 0 && (<p>These are not the posts you're looking for</p>)
+      }
 
     </div>
   )
