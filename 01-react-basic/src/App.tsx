@@ -21,8 +21,15 @@ function App() {
   const [salary, setSaraly] = useState(10)
 
   const handleButtonClick = () => {
-    setClicks(clicks + 1)
-    console.log("clicks", clicks)
+    console.log("Clicks before first change:", clicks)
+
+    setClicks(prevState => { return prevState + 1 }) // prevState = 0, return 1 
+
+    console.log("Clicks after first change:", clicks)
+
+    setClicks(prevState =>  prevState + 1 ) // prevState = 1, return 2
+
+    console.log("Clicks after second change:", clicks)
 
   }
 
@@ -31,10 +38,14 @@ function App() {
     if (salary + amount < 5) {
       return setSaraly(5)
     }
+
     setSaraly(salary + amount)
   }
 
+
   console.log("Rendering...")
+
+
 
   return (
     <div className="App">
