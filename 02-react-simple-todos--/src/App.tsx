@@ -26,7 +26,7 @@ function App() {
 
     // Clear newTodoTitle state
     setNewTodoTitle("") 
-  }
+  } 
 
 
     const toggleTodo = (todo: Todo) => {
@@ -78,7 +78,7 @@ function App() {
 
           ))}
         </ul>
-
+        <p className="status">{todos.filter(todo => todo.completed).length} of {todos.length} todos completed</p>
       </div>
     )
   }
