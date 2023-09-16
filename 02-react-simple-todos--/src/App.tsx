@@ -45,6 +45,9 @@ function App() {
     //}
   }
 
+  const unfinishedTodos = todos.filter(todo => !todo.completed)
+  const finishedTodos = todos.filter(todo => todo.completed)
+
   return (
     <div className='container'>
       <h1 className='mb-3'>React simple todos</h1>
@@ -70,7 +73,7 @@ function App() {
 
           <ul className="todolist">
 
-            {todos.map((todo, index) => (
+            {unfinishedTodos.map((todo, index) => (
 
               <li className={todo.completed ? "done" : ""} key={index}>
 
@@ -80,15 +83,34 @@ function App() {
 
                   <span className="todo-delete" onClick={() => deleteTodo(todo)} role='button'>🗑️</span>
 
-                  <span className="todo-toggle" onClick={() => toggleTodo(todo)} role='button'>{todo.completed ? '✅' : '✅'}</span>
+                  <span className="todo-toggle" onClick={() => toggleTodo(todo)} role='button'>{todo.completed ? '❎' : '✅'}</span>
                 </div>
               </li>
 
             ))}
           </ul>
 
-               // show completed vs total number of todos
-          <p className="status">{todos.filter(todo => todo.completed).length} of {todos.length} todos completed</p>
+          <ul className="todolist">
+
+            {finishedTodos.length > 0 && finishedTodos.map((todo, index) => (
+
+              <li className={todo.completed ? "done" : ""} key={index}>
+
+                <span className="todo-title">{todo.title}</span>
+
+                <div className='ms-1'>
+
+                  <span className="todo-delete" onClick={() => deleteTodo(todo)} role='button'>🗑️</span>
+
+                  <span className="todo-toggle" onClick={() => toggleTodo(todo)} role='button'>{todo.completed ? '❎' : '✅'}</span>
+                </div>
+              </li>
+
+            ))}
+          </ul>
+
+               //show completed vs total number of todos
+          <p className="status">{finishedTodos.length} of {todos.length} todos completed</p>
         </>
       )}
 
