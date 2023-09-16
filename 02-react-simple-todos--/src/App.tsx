@@ -49,13 +49,24 @@ function App() {
 
   const unfinishedTodos = todos.filter(todo => !todo.completed)
   const finishedTodos = todos.filter(todo => todo.completed)
+
+  //This will only be executed when the component is mounted
+  // and only AFTER the componenet has been rendered
+  useEffect(() => {
+    console.log("Look mom, I'm a newly mounted component?")
+  }, [])
   
 
-  // Our firsr side-effect
+  // This will only be executed if `finishedTodos.length` or `todos.lenght`
+  //have changeed since last render, and only After the componenet has been rendered
   useEffect( () => {
     console.log("Updating page title...")
     document.title = `${finishedTodos.length} of ${todos.length} completed`
   }, [finishedTodos.length, todos.length])
+
+  useEffect(() => {
+    console.log("")
+  })
 
   console.log("Rendering...")
 
