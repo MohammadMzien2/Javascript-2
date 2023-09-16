@@ -10,30 +10,77 @@ function App() {
     { title: "Drink all the Coffee", completed: false },
   ])
 
+  const [newTodoTitle, setNewTodoTitle] = useState<string>("")
 
-  return (
-    <div className='container'>
-      <h1>React simple todos</h1>
+  const handlesubmit = (e: React.FormEvent) => {
+    // Stop form from submitting
+    e.preventDefault()
 
-      <ul className="todolist">
+    // create a new todo and set a new todo
+    const newTodo: Todo = {
+      title: newTodoTitle,
+      completed: false,
+    }
 
-        {todos.map((todo, index) => (
+    setTodos([...todos, newTodo])
 
-          <li className={todo.completed ? "done" : "" } key={index}>
+    // Clear newTodoTitle state
+    setNewTodoTitle("") 
+  }
 
-            <span className="todo-title">{todo.title}</span>
 
-            <span className="todo-delete" role='button'>🗑️</span>
+    const toggleTodo = (todo: Todo) => {
+      todo.completed = !todo.completed // man kan göra så istället för skriva if sats 
+      setTodos([...todos])
 
-            <span className="todo-toggle" role='button'>✅</span>
+      //if(todo.completed){
+      // todo.completed = false
+      //}else {
+      // todo.completed = true
+      //}
+    }
 
-          </li>
+    return (
+      <div className='container'>
+        <h1 className='mb-3'>React simple todos</h1>
 
-        ))}
-      </ul>
+        <form onSubmit={handlesubmit} className='mb-3'>
 
-    </div>
-  )
-}
+          <div className="input-group">
 
-export default App
+            <input type="text"
+              className='form-control'
+              placeholder='Todo title'
+              onChange={e => setNewTodoTitle(e.target.value)}
+              value={newTodoTitle} />
+
+            <button type='submit' className='btn btn-success'>
+              Create
+            </button>
+          </div>
+        </form>
+
+        <ul className="todolist">
+
+          {todos.map((todo, index) => (
+
+            <li className={todo.completed ? "done" : ""} key={index}>
+
+              <span className="todo-title">{todo.title}</span>
+
+              <div className='ms-1'>
+
+                <span className="todo-delete" role='button'>🗑️</span>
+
+                <span className="todo-toggle" onClick={() => toggleTodo(todo)} role='button'>{todo.completed ? '✅' : '✅'}</span>
+              </div>
+            </li>
+
+          ))}
+        </ul>
+
+      </div>
+    )
+  }
+
+  export default App
