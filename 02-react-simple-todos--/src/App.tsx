@@ -28,7 +28,7 @@ function App() {
     setNewTodoTitle("")
 
   }
-  
+
   const deleteTodo = (todoToDelete: Todo) => {
     //set a new list of todos where the clicked todo is excluded
     setTodos(todos.filter(todo => todo !== todoToDelete))
@@ -65,27 +65,37 @@ function App() {
         </div>
       </form>
 
-      <ul className="todolist">
+      {todos.length > 0 && (
+        <>
 
-        {todos.map((todo, index) => (
+          <ul className="todolist">
 
-          <li className={todo.completed ? "done" : ""} key={index}>
+            {todos.map((todo, index) => (
 
-            <span className="todo-title">{todo.title}</span>
+              <li className={todo.completed ? "done" : ""} key={index}>
 
-            <div className='ms-1'>
+                <span className="todo-title">{todo.title}</span>
 
-              <span className="todo-delete" onClick={() => deleteTodo(todo)} role='button'>🗑️</span>
+                <div className='ms-1'>
 
-              <span className="todo-toggle" onClick={() => toggleTodo(todo)} role='button'>{todo.completed ? '✅' : '✅'}</span>
-            </div>
-          </li>
+                  <span className="todo-delete" onClick={() => deleteTodo(todo)} role='button'>🗑️</span>
 
-        ))}
-      </ul>
+                  <span className="todo-toggle" onClick={() => toggleTodo(todo)} role='button'>{todo.completed ? '✅' : '✅'}</span>
+                </div>
+              </li>
 
-        //show completed vs total number of todos
-      <p className="status">{todos.filter(todo => todo.completed).length} of {todos.length} todos completed</p>
+            ))}
+          </ul>
+
+               // show completed vs total number of todos
+          <p className="status">{todos.filter(todo => todo.completed).length} of {todos.length} todos completed</p>
+        </>
+      )}
+
+      {todos.length === 0 && (
+        <p>YYAYY, you have 0 todos to do</p>
+      )}
+
     </div>
   )
 }
