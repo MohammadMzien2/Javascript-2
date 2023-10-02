@@ -9,12 +9,16 @@ function App() {
 
   useEffect(() => {
     console.log('Starting clock...')
-    
+
     setInterval(() => {
       setTime(new Date().toLocaleTimeString())
       console.log("tick")
     }, 1000)
   }, [])
+
+  useEffect(() => {
+    document.title = time
+  }, [time])
 
   return (
     <div className='container'>
